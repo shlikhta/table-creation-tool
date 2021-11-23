@@ -1,17 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState } from 'react';
+import { render } from 'react-dom';
+import './styles.css';
+import { TableSeatsTool } from './components/TableSeatsTool';
+import { CircleTable } from './components/CircleTable';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const App = () => {
+  const [circleSeats, setCircleSeats] = useState(8);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  return (
+    <div className="app-wrap">
+      <div className="table-tool-header">
+        <TableSeatsTool
+          count={5}
+          title="Seats for Rectangle Table"
+          desc="Select the number of seats"
+        />
+        <TableSeatsTool
+          count={circleSeats}
+          setSeats={setCircleSeats}
+          title="Seats for Circular Table"
+          desc="Select the number of seats"
+        />
+      </div>
+      <div className="table-area">
+        <div className="table-area__inner"></div>
+        <div className="table-area__inner">
+          <CircleTable seatsCount={circleSeats} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+render(<App />, document.getElementById('root'));

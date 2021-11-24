@@ -10,7 +10,7 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
     seatHeight: 18,
     seatOffsetY: 3,
     seatRx: 7,
-    spaceBetweenSeats: 6,
+    spaceBetweenSeats: 18,
   });
 
   useEffect(() => {
@@ -70,8 +70,6 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
       width={svgProps.svgSize}
       height={svgProps.svgSize}
       viewBox={`0 0 ${svgProps.svgSize} ${svgProps.svgSize}`}
-      fill="currentColor"
-      stroke="none"
       {...props}
     >
       <defs>
@@ -100,13 +98,6 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
           />
         </filter>
-        <circle
-          id="a"
-          cx={svgProps.svgSize / 2}
-          cy={svgProps.svgSize / 2}
-          r={svgProps.tableSize / 2}
-          stroke="none"
-        />
       </defs>
       <g fill="#D8D8D8" stroke="none">
         {svgProps.seats &&
@@ -127,8 +118,24 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
             );
           })}
       </g>
-      <use xlinkHref="#a" fill="#000" filter="url(#b)" />
-      <use xlinkHref="#a" fill="currentColor" />
+
+      <circle
+        cx={svgProps.svgSize / 2}
+        cy={svgProps.svgSize / 2}
+        r={svgProps.tableSize / 2}
+        stroke="none"
+        fill="#000"
+        filter="url(#b)"
+      />
+      <circle
+        cx={svgProps.svgSize / 2}
+        cy={svgProps.svgSize / 2}
+        r={svgProps.tableSize / 2}
+        fill="currentColor"
+        stroke="none"
+      />
+      {/*<use href="#a" fill="#000" filter="url(#b)" />*/}
+      {/*<use href="#a" fill="currentColor" />*/}
     </svg>
   );
 };

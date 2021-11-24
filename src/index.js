@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import './styles.css';
 import { TableSeatsTool } from './components/TableSeatsTool';
-import { CircleTable } from './components/CircleTable';
+import { RoundTable } from './components/RoundTable';
+import { SquareTable } from './components/SquareTable';
 
 const App = () => {
   const [circleSeats, setCircleSeats] = useState(8);
+  const [squareSeats, setSquareSeats] = useState(4);
 
   return (
     <div className="app-wrap">
       <div className="table-tool-header">
         <TableSeatsTool
-          count={5}
+          count={squareSeats}
+          setSeats={setSquareSeats}
           title="Seats for Rectangle Table"
           desc="Select the number of seats"
         />
@@ -23,9 +26,11 @@ const App = () => {
         />
       </div>
       <div className="table-area">
-        <div className="table-area__inner"></div>
         <div className="table-area__inner">
-          <CircleTable seatsCount={circleSeats} />
+          <SquareTable width={320} height={320} seatsCount={squareSeats} />
+        </div>
+        <div className="table-area__inner">
+          <RoundTable seatsCount={circleSeats} />
         </div>
       </div>
     </div>

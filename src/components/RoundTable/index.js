@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export const CircleTable = ({ seatsCount = 0, ...props }) => {
+export const RoundTable = ({ seatsCount = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
     svgSize: 120,

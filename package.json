@@ -17,7 +17,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage": "https://shlikhta.github.io/table-creation-tool",
+  "homepage": "https://shlikhta.github.io/table-creation-tool/",
   "browserslist": [
     ">0.2%",
     "not dead",

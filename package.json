@@ -2,6 +2,7 @@
   "name": "table-creation-tool",
   "version": "1.0.0",
   "dependencies": {
+    "gh-pages": "^3.2.3",
     "nexticons": "^0.0.2",
     "node-sass": "4.14.1",
     "react": "16.8.4",
@@ -24,7 +25,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "gh-pages": "^3.2.3",
     "prettier": "2.4.1"
   }
 }

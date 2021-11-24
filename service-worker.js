@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/table-creation-tool/precache-manifest.eda336f0f3e5a02b2b5dd54d29db8435.js"
+  "/table-creation-tool/precache-manifest.083b223565ec514dc040eb0edeaa1219.js"
 );
 
 workbox.clientsClaim();

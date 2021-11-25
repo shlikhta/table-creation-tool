@@ -146,9 +146,9 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
         <filter
           // id="b"
           width="118.6%"
-          height="134%"
+          height="118.6%"
           x="-9.3%"
-          y="-17%"
+          y="-9.3%"
           filterUnits="objectBoundingBox"
         >
           <feMorphology

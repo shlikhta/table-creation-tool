@@ -15,21 +15,24 @@ const App = () => {
     <div className="app-wrap">
       <div className="table-tool-header">
         <TableSeatsTool
-          count={rectangleSeats}
-          setSeats={setRectangleSeats}
-          title="Seats for Rectangle Table"
+          count={squareSeats}
+          setSeats={setSquareSeats}
+          title="Seats for Square Table"
           desc="Select the number of seats"
         />
+
         <TableSeatsTool
-          count={circleSeats}
-          setSeats={setCircleSeats}
+          count={rectangleSeats}
+          setSeats={setRectangleSeats}
           title="Seats for Circular Table"
           desc="Select the number of seats"
         />
       </div>
       <div className="table-area">
         <div className="table-area__inner">
-          <RectangleTable seatsCount={4} style={{color: "#ffffff"}} />
+
+          <SquareTable seatsCount={squareSeats} style={{color: "#0a56f1"}} />
+
         </div>
         <div className="table-area__inner">
           <RoundTable seatsCount={circleSeats} style={{color: "#b620e0"}} />
@@ -37,16 +40,16 @@ const App = () => {
       </div>
       <div className="table-tool-header">
         <TableSeatsTool
-          count={squareSeats}
-          setSeats={setSquareSeats}
-          title="Seats for Square Table"
+          count={rectangleSeats}
+          setSeats={setRectangleSeats}
+          title="Seats for Rectangle Table"
           desc="Select the number of seats"
         />
        <div/>
       </div>
       <div className="table-area">
         <div className="table-area__inner">
-          <SquareTable seatsCount={squareSeats} style={{color: "#0a56f1"}} />
+          <RectangleTable seatsCount={rectangleSeats} style={{color: "#ffffff"}} />
         </div>
         <div className="table-area__inner">
         </div>

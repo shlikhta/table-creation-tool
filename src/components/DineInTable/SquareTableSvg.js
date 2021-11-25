@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
@@ -9,16 +9,22 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
     seatWidth: 26,
     seatHeight: 18,
     seatOffset: 2,
-    seatRx: 7,
-    spaceBetweenSeats: 18,
+    seatRound: 7,
+    seatOpacity: 0.76,
+    spaceBetweenSeats: 8, //18
     angleSpace: 14,
   });
 
-  useEffect(() => {
+  useMemo(() => {
     const borderCount = 4;
     let seats = [];
     let tableProp = [];
-    let spaceBetweenSeats = svgProps.spaceBetweenSeats;
+    let spaceBetweenSeats =
+      numSeats <= 12
+        ? svgProps.spaceBetweenSeats
+        : numSeats > 12 && numSeats <= 20
+        ? 6
+        : 4;
     let seatWidth = svgProps.seatWidth;
     let seatHeight = svgProps.seatHeight;
     let tableOffset = svgProps.tableOffset;
@@ -151,6 +157,7 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
       seats,
       svgSize,
       tableSize,
+      spaceBetweenSeats,
     }));
   }, [numSeats]);
 
@@ -211,8 +218,8 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
                     }
                     x={seat.seatStartX}
                     y={seat.seatStartY}
-                    opacity="0.7"
-                    rx="7"
+                    opacity={svgProps.seatOpacity}
+                    rx={svgProps.seatRound}
                   />
                 );
               })

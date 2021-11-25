@@ -246,7 +246,7 @@ img {
   gap: 50px 0;
   padding: 60px 20px;
   max-width: 980px;
-    width: 100%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -328,12 +328,72 @@ img {
   padding: 10px;
 }
 
-
 .dine-in-table {
-    /*background-color: red;*/
+  position: relative;
+
+  color: #ffffff;
+  /*background-color: red;*/
 }
-.dine-in-table svg {display: block;}
-.dine-in-table {}
-.dine-in-table {}
-.dine-in-table {}
-.dine-in-table {}
+
+.dine-in-table--text-light {
+  color: #ffffff;
+}
+.dine-in-table--text-dark {
+  color: #646464;
+}
+
+.dine-in-table__box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+.dine-in-table__inner {
+  display: grid;
+  gap: 5px 0;
+  justify-content: center;
+  align-items: center;
+}
+.dine-in-table__number {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+}
+.dine-in-table__progress-bar {
+  overflow: hidden;
+  position: relative;
+  display: block;
+  width: 38px;
+  height: 3px;
+  font-size: 0;
+  background-color: #c8c8c8;
+  border-radius: 3px;
+}
+.dine-in-table__progress-line {
+  position: absolute;
+  z-index: 5;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: #ffffff;
+}
+.dine-in-table__icon-box {
+}
+.dine-in-table__icon {
+  display: block;
+  width: 18px;
+  margin: 0 auto;
+}
+.dine-in-table__svg {
+  position: relative;
+  display: block;
+  z-index: 1;
+  transform-origin: center;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 export const RectangularTableSvg = ({ numSeats = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
@@ -15,19 +15,29 @@ export const RectangularTableSvg = ({ numSeats = 0, ...props }) => {
     seatWidth: 26,
     seatHeight: 18,
     seatOffset: 2,
-    seatRx: 7,
+    seatRound: 7,
+    seatOpacity: 0.76,
     spaceBetweenSeats: 18, //18
     angleSpace: 14,
   });
 
-  useEffect(() => {
+  useMemo(() => {
     let seats = [];
     let tableProp = [];
     let tableWidth = 54;
     let tableHeight = 54;
     let svgWidth = 72;
     let svgHeight = 72;
-    let spaceBetweenSeats = svgProps.spaceBetweenSeats;
+    let spaceBetweenSeats =
+      numSeats <= 8
+        ? svgProps.spaceBetweenSeats
+        : numSeats > 8 && numSeats <= 12
+        ? 14
+        : numSeats > 12 && numSeats <= 16
+        ? 10
+        : numSeats > 16 && numSeats <= 20
+        ? 8
+        : 4;
     let seatWidth = svgProps.seatWidth;
     let seatHeight = svgProps.seatHeight;
     let tableOffset = svgProps.tableOffset;
@@ -241,8 +251,8 @@ export const RectangularTableSvg = ({ numSeats = 0, ...props }) => {
                     }
                     x={seat.seatStartX}
                     y={seat.seatStartY}
-                    opacity="0.7"
-                    rx="7"
+                    opacity={svgProps.seatOpacity}
+                    rx={svgProps.seatRound}
                   />
                 );
               })

@@ -3,11 +3,12 @@ import { render } from 'react-dom';
 import './styles.css';
 import { TableSeatsTool } from './components/TableSeatsTool';
 import { DineInTable } from './components/DineInTable';
+import { DessertIcon } from 'nexticons/outline';
 
 const App = () => {
   const [circleSeats, setCircleSeats] = useState(8);
   const [squareSeats, setSquareSeats] = useState(4);
-  const [rectangleSeats, setRectangleSeats] = useState(4);
+  const [rectangleSeats, setRectangleSeats] = useState(5);
 
   return (
     <div className="app-wrap">
@@ -31,14 +32,20 @@ const App = () => {
           <DineInTable
             type="SquareTable"
             numSeats={squareSeats}
-            style={{ color: '#0a56f1' }}
+            number={12}
+            progress={55}
+            icon={<DessertIcon className="dine-in-table__icon" />}
+            tableColor="#0a56f1"
           />
         </div>
         <div className="table-area__inner">
           <DineInTable
             type="RoundTable"
             numSeats={circleSeats}
-            style={{ color: '#b620e0' }}
+            number={13}
+            progress={50}
+            icon={<DessertIcon className="dine-in-table__icon" />}
+            tableColor="#b620e0"
           />
         </div>
       </div>
@@ -55,11 +62,14 @@ const App = () => {
         <div className="table-area__inner">
           <DineInTable
             type="RectangularTable"
+            number={14}
+            showProgress={false}
             numSeats={rectangleSeats}
-            style={{ color: '#ffffff' }}
+            textTheme="dark"
+            tableColor="#ffffff"
           />
         </div>
-        <div className="table-area__inner"></div>
+        <div className="table-area__inner" />
       </div>
     </div>
   );

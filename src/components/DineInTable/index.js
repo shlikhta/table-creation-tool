@@ -11,12 +11,43 @@ export const DineInTable = ({
   numSeats,
   positionX,
   positionY,
-  orientationAngle,
+  orientationAngle = 0,
   scale,
+  icon,
+  progress,
+  showProgress = true,
+  tableColor,
+  textTheme, // dark, light
+  ...props
 }) => {
   return (
-    <div className="dine-in-table">
-      <RenderSvg numSeats={numSeats} type={type} />
+    <div
+      className={`dine-in-table dine-in-table--text-${textTheme}`}
+      {...props}
+    >
+      <div className="dine-in-table__box">
+        <div className="dine-in-table__inner">
+          <div className="dine-in-table__number">{name ? name : number}</div>
+          {showProgress && (
+            <div className="dine-in-table__progress-bar">
+              <div
+                className="dine-in-table__progress-line"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          )}
+          {icon && <div className="dine-in-table__icon-box">{icon}</div>}
+        </div>
+      </div>
+      <RenderSvg
+        className="dine-in-table__svg"
+        style={{
+          color: tableColor,
+          transform: `rotate(${orientationAngle}deg)`,
+        }}
+        numSeats={numSeats}
+        type={type}
+      />
     </div>
   );
 };

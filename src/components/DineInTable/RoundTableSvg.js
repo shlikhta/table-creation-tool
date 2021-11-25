@@ -1,23 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
-    svgSize: 72,
-    tableSize: 60,
+    svgSize: 66,
+    tableSize: 54,
     tableRotate: 180,
     tableOffset: 6,
     seatWidth: 26,
     seatHeight: 18,
-    seatOffsetY: 3,
+    seatOffsetY: 2,
     seatRound: 7,
-    seatOpacity: 0.7,
+    seatOpacity: 0.76,
     spaceBetweenSeats: 18,
   });
 
-  useEffect(() => {
+  useMemo(() => {
     let seats = [];
-    let spaceBetweenSeats = svgProps.spaceBetweenSeats;
+    let spaceBetweenSeats =
+      numSeats <= 8
+        ? svgProps.spaceBetweenSeats
+        : numSeats > 8 && numSeats <= 12
+        ? 14
+        : numSeats > 12 && numSeats <= 16
+        ? 10
+        : numSeats > 16 && numSeats <= 20
+        ? 8
+        : 4;
     let seatWidth = svgProps.seatWidth;
     let seatHeight = svgProps.seatHeight;
     let tableOffset = svgProps.tableOffset;

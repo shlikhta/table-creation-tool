@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export const SquareTable = ({ seatsCount = 0, ...props }) => {
+export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
     svgSize: 72,
@@ -10,31 +10,31 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
     seatHeight: 18,
     seatOffset: 2,
     seatRx: 7,
-    spaceBetweenSeats: 18, //18
+    spaceBetweenSeats: 18,
     angleSpace: 14,
   });
 
   useEffect(() => {
+    const borderCount = 4;
     let seats = [];
     let tableProp = [];
-    let tableSize = 54;
-    let svgSize = 72;
     let spaceBetweenSeats = svgProps.spaceBetweenSeats;
     let seatWidth = svgProps.seatWidth;
     let seatHeight = svgProps.seatHeight;
     let tableOffset = svgProps.tableOffset;
     let seatOffset = svgProps.seatOffset;
     let angleSpace = svgProps.angleSpace;
-    let maxSeatsEachBorder = Math.ceil(seatsCount / 4);
+    let maxSeatsEachBorder = Math.ceil(numSeats / 4);
+    let tablePerimeter =
+      borderCount * seatWidth * maxSeatsEachBorder +
+      borderCount * (maxSeatsEachBorder - 1) * spaceBetweenSeats +
+      angleSpace * borderCount * 2;
+    let tableWidth = tablePerimeter / borderCount;
+    let tableSize = tableWidth > seatWidth ? tableWidth : svgProps.tableSize;
+    let svgSize = tableSize + tableOffset * 2;
 
-    if (seatsCount > 0) {
+    if (numSeats > 0) {
       const borderCount = 4;
-      let tablePerimeter =
-        borderCount * seatWidth * maxSeatsEachBorder +
-        borderCount * (maxSeatsEachBorder - 1) * spaceBetweenSeats +
-        angleSpace * borderCount * 2;
-      tableSize = tablePerimeter / borderCount;
-      svgSize = tableSize + tableOffset * 2;
 
       let centerX = svgSize / 2;
       let centerY = svgSize / 2;
@@ -42,7 +42,7 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
       for (let i = 0; i < borderCount; i++) {
         let rotate = (360 / borderCount) * i + 90;
 
-         let anglePositionX =
+        let anglePositionX =
           i % 4 === 0 || i % 4 === 3
             ? tableOffset
             : i % 4 === 1 || i % 4 === 2
@@ -64,15 +64,35 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
         });
       }
 
-      for (let i = 0; i < seatsCount; i++) {
+      for (let i = 0; i < numSeats; i++) {
         let groupIndex = i % 4;
-        tableProp[groupIndex].count += 1;
 
-        tableProp[groupIndex].seats.push({
-          id: `seat_${i}`,
-          anglePositionX: tableProp[groupIndex].anglePositionX,
-          anglePositionY: tableProp[groupIndex].anglePositionY,
-        });
+        if (numSeats === 2 && i === 1) {
+          let rectGroupIndex = groupIndex % 2 === 0 ? 0 : 2;
+
+          tableProp[rectGroupIndex].count += 1;
+          tableProp[rectGroupIndex].seats.push({
+            id: `seat_${i}`,
+            anglePositionX: tableProp[rectGroupIndex].anglePositionX,
+            anglePositionY: tableProp[rectGroupIndex].anglePositionY,
+          });
+        } else if (i < 4) {
+          tableProp[groupIndex].count += 1;
+          tableProp[groupIndex].seats.push({
+            id: `seat_${i}`,
+            anglePositionX: tableProp[groupIndex].anglePositionX,
+            anglePositionY: tableProp[groupIndex].anglePositionY,
+          });
+        } else {
+          let rectGroupIndex = groupIndex === 3 ? 0 : groupIndex + 1;
+
+          tableProp[rectGroupIndex].count += 1;
+          tableProp[rectGroupIndex].seats.push({
+            id: `seat_${i}`,
+            anglePositionX: tableProp[rectGroupIndex].anglePositionX,
+            anglePositionY: tableProp[rectGroupIndex].anglePositionY,
+          });
+        }
       }
 
       for (let i = 0; i < tableProp.length; i++) {
@@ -109,13 +129,17 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
             if (groupIndex === 1 || groupIndex === 3) {
               tableProp[i].seats[j].seatStartX = step;
               tableProp[i].seats[j].seatStartY =
-                tableProp[i].seats[j].anglePositionY - seatHeight / 2 + direction * seatOffset;
+                tableProp[i].seats[j].anglePositionY -
+                seatHeight / 2 +
+                direction * seatOffset;
             } else {
               tableProp[i].seats[j].seatStartY = step;
               tableProp[i].seats[j].seatStartX =
-                tableProp[i].seats[j].anglePositionX - seatHeight / 2 - direction * seatOffset;
+                tableProp[i].seats[j].anglePositionX -
+                seatHeight / 2 -
+                direction * seatOffset;
             }
-                      }
+          }
         }
 
         seats.push(tableProp[i].seats);
@@ -128,15 +152,12 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
       svgSize,
       tableSize,
     }));
-  }, [seatsCount]);
+  }, [numSeats]);
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      // width="115"
-      // height="71"
-      // viewBox="0 0 115 71"
       width={svgProps.svgSize}
       height={svgProps.svgSize}
       viewBox={`0 0 ${svgProps.svgSize} ${svgProps.svgSize}`}
@@ -144,7 +165,7 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
     >
       <defs>
         <filter
-          // id="b"
+          id="square-shadow"
           width="118.6%"
           height="118.6%"
           x="-9.3%"
@@ -169,8 +190,6 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
           />
         </filter>
       </defs>
-
-
 
       <g fill="#D8D8D8" stroke="none">
         {svgProps.seats &&
@@ -201,7 +220,6 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
           })}
       </g>
       <rect
-        id="a"
         width={svgProps.tableSize}
         height={svgProps.tableSize}
         x="9"
@@ -209,10 +227,9 @@ export const SquareTable = ({ seatsCount = 0, ...props }) => {
         rx="12"
         stroke="none"
         fill="#000"
-        filter="url(#b)"
+        filter="url(#square-shadow)"
       />
       <rect
-        id="a"
         width={svgProps.tableSize}
         height={svgProps.tableSize}
         x="9"

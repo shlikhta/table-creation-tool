@@ -1,43 +1,42 @@
 import React, { useEffect, useState } from 'react';
 
-export const RoundTable = ({ seatsCount = 0, ...props }) => {
+export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
-    svgSize: 120,
-    tableSize: 108,
+    svgSize: 72,
+    tableSize: 60,
+    tableRotate: 180,
     tableOffset: 6,
     seatWidth: 26,
     seatHeight: 18,
     seatOffsetY: 3,
-    seatRx: 7,
+    seatRound: 7,
+    seatOpacity: 0.7,
     spaceBetweenSeats: 18,
   });
 
   useEffect(() => {
     let seats = [];
-    let tableRadius = 108 / 2;
-    let svgSize = 120;
     let spaceBetweenSeats = svgProps.spaceBetweenSeats;
     let seatWidth = svgProps.seatWidth;
     let seatHeight = svgProps.seatHeight;
     let tableOffset = svgProps.tableOffset;
     let seatOffsetY = svgProps.seatOffsetY;
+    let tableRadius =
+      numSeats <= 4
+        ? svgProps.tableSize / 2
+        : (numSeats * (seatWidth + spaceBetweenSeats)) / (2 * Math.PI);
+    let svgSize =
+      numSeats <= 4 ? svgProps.svgSize : (tableRadius + tableOffset) * 2;
 
-    if (seatsCount > 0) {
-      let tablePerimeter = 2 * Math.PI * tableRadius;
-
-      if (tablePerimeter - seatsCount * (seatWidth + spaceBetweenSeats) <= 0) {
-        tableRadius =
-          (seatsCount * (seatWidth + spaceBetweenSeats)) / (2 * Math.PI);
-        svgSize = (tableRadius + tableOffset) * 2;
-      }
-
+    if (numSeats > 0) {
       let centerX = svgSize / 2;
       let centerY = svgSize / 2;
 
-      for (let i = 0; i < seatsCount; i++) {
-        let rotate = (360 / seatsCount) * i + 90;
+      for (let i = 0; i < numSeats; i++) {
+        let seatsCount = numSeats !== 3 ? numSeats : 4;
         let step = (2 * Math.PI * i) / seatsCount;
+        let rotate = (360 / seatsCount) * i + 90;
         let seatCenterX = Math.cos(step) * tableRadius + centerX;
         let seatCenterY = Math.sin(step) * tableRadius + centerY;
         let seatStartX = seatCenterX - seatWidth / 2;
@@ -60,8 +59,9 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
       seats,
       svgSize,
       tableSize: tableRadius * 2,
+      tableRotate: numSeats === 5 ? 270 : 180,
     }));
-  }, [seatsCount]);
+  }, [numSeats]);
 
   return (
     <svg
@@ -74,7 +74,7 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
     >
       <defs>
         <filter
-          id="b"
+          id="round-shadow"
           width="116.7%"
           height="116.7%"
           x="-8.3%"
@@ -99,11 +99,16 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
           />
         </filter>
       </defs>
-      <g fill="#D8D8D8" stroke="none">
+      <g
+        fill="#D8D8D8"
+        stroke="none"
+        transform={`rotate(${svgProps.tableRotate} ${svgProps.svgSize / 2} ${
+          svgProps.svgSize / 2
+        })`}
+      >
         {svgProps.seats &&
           svgProps.seats.length > 0 &&
           svgProps.seats.map((seat) => {
-            // console.log('seat', seat);
             return (
               <rect
                 key={seat.id}
@@ -111,9 +116,9 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
                 height={svgProps.seatHeight}
                 x={seat.seatStartX}
                 y={seat.seatStartY}
-                opacity="0.7"
+                opacity={svgProps.seatOpacity}
                 transform={`rotate(${seat.rotate} ${seat.seatCenterX} ${seat.seatCenterY})`}
-                rx="7"
+                rx={svgProps.seatRound}
               />
             );
           })}
@@ -125,7 +130,7 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
         r={svgProps.tableSize / 2}
         stroke="none"
         fill="#000"
-        filter="url(#b)"
+        filter="url(#round-shadow)"
       />
       <circle
         cx={svgProps.svgSize / 2}
@@ -134,8 +139,6 @@ export const RoundTable = ({ seatsCount = 0, ...props }) => {
         fill="currentColor"
         stroke="none"
       />
-      {/*<use href="#a" fill="#000" filter="url(#b)" />*/}
-      {/*<use href="#a" fill="currentColor" />*/}
     </svg>
   );
 };

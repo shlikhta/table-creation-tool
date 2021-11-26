@@ -22,12 +22,9 @@ export const RectangularTableSvg = ({ numSeats = 0, ...props }) => {
   });
 
   useMemo(() => {
+    const borderCount = 4;
     let seats = [];
     let tableProp = [];
-    let tableWidth = 54;
-    let tableHeight = 54;
-    let svgWidth = 72;
-    let svgHeight = 72;
     let spaceBetweenSeats =
       numSeats <= 8
         ? svgProps.spaceBetweenSeats
@@ -44,19 +41,20 @@ export const RectangularTableSvg = ({ numSeats = 0, ...props }) => {
     let seatOffset = svgProps.seatOffset;
     let angleSpace = svgProps.angleSpace;
     let maxSeatsEachBorder = Math.ceil((numSeats - 2) / 2);
+    let tableHeight = svgProps.tableSize.height;
+    let tablePerimeter =
+      2 * tableHeight +
+      2 *
+        (seatWidth * maxSeatsEachBorder +
+          spaceBetweenSeats * (maxSeatsEachBorder - 1) +
+          angleSpace * 2);
+    let newTableWidth = (tablePerimeter - 2 * tableHeight) / 2;
+    let tableWidth =
+      seatWidth > newTableWidth ? svgProps.tableSize.width : newTableWidth;
+    let svgWidth = tableWidth + tableOffset * 2;
+    let svgHeight = svgProps.svgSize.height;
 
     if (numSeats > 0) {
-      const borderCount = 4;
-      let tablePerimeter =
-        2 * tableHeight +
-        2 *
-          (seatWidth * maxSeatsEachBorder +
-            spaceBetweenSeats * (maxSeatsEachBorder - 1) +
-            angleSpace * 2);
-      tableWidth = (tablePerimeter - 2 * tableHeight) / 2;
-      tableWidth = tableWidth > seatWidth ? tableWidth : 54;
-      svgWidth = tableWidth + tableOffset * 2;
-
       let centerX = svgWidth / 2;
       let centerY = svgHeight / 2;
 

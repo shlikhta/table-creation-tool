@@ -53,7 +53,6 @@ export const DineInTable = ({
 };
 
 function RenderSvg({ type, ...props }) {
-  console.log('props', props);
   if (type === 'SquareTable') {
     return <SquareTableSvg {...props} />;
   } else if (type === 'RectangularTable') {

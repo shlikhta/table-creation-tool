@@ -26,6 +26,8 @@ export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
         ? 10
         : numSeats > 16 && numSeats <= 20
         ? 8
+        : numSeats > 20 && numSeats <= 23
+        ? 6
         : 4;
     let seatWidth = svgProps.seatWidth;
     let seatHeight = svgProps.seatHeight;

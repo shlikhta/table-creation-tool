@@ -1,22 +1,60 @@
 import React, { useMemo, useState } from 'react';
 
+const defaultOptions = {
+  seatWidth: 26,
+  seatHeight: 18,
+  tableOffset: 6,
+  seatOffsetY: 2,
+  seatRound: 7,
+  maxSpaceBetweenSeats: 18,
+  minSpaceBetweenSeats: 4,
+  seatColor: '#A0A0A0',
+};
+
 export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
     svgSize: 66,
     tableSize: 54,
     tableRotate: 180,
-    tableOffset: 6,
-    seatWidth: 26,
-    seatHeight: 18,
-    seatOffsetY: 2,
-    seatRound: 7,
-    seatOpacity: 0.76,
     spaceBetweenSeats: 18,
   });
 
-  useMemo(() => {
+  const calcHalf = (val) => {
+    return val / 2;
+  };
+
+  const getSeats = ({ numSeats, tableRadius, svgSize }) => {
     let seats = [];
+    const centerCoordinate = calcHalf(svgSize);
+    const { seatWidth, seatHeight, seatOffsetY } = defaultOptions;
+
+    for (let i = 0; i < numSeats; i++) {
+      let seatsCount = numSeats !== 3 ? numSeats : 4;
+      let step = (2 * Math.PI * i) / seatsCount;
+      let rotate = (360 / seatsCount) * i + 90;
+      let seatCenterX = Math.cos(step) * tableRadius + centerCoordinate;
+      let seatCenterY = Math.sin(step) * tableRadius + centerCoordinate;
+      let seatStartX = seatCenterX - calcHalf(seatWidth);
+      let seatStartY = seatCenterY + seatOffsetY - calcHalf(seatHeight);
+
+      seats.push({
+        id: `seat_${i}`,
+        step,
+        rotate,
+        seatCenterX,
+        seatCenterY,
+        seatStartX,
+        seatStartY,
+      });
+    }
+
+    return seats;
+  };
+
+  useMemo(() => {
+    const { seatWidth, tableOffset } = defaultOptions;
+
     let spaceBetweenSeats =
       numSeats <= 8
         ? svgProps.spaceBetweenSeats
@@ -29,41 +67,15 @@ export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
         : numSeats > 20 && numSeats <= 23
         ? 6
         : 4;
-    let seatWidth = svgProps.seatWidth;
-    let seatHeight = svgProps.seatHeight;
-    let tableOffset = svgProps.tableOffset;
-    let seatOffsetY = svgProps.seatOffsetY;
+
     let tableRadius =
       numSeats <= 4
         ? svgProps.tableSize / 2
         : (numSeats * (seatWidth + spaceBetweenSeats)) / (2 * Math.PI);
+
     let svgSize =
       numSeats <= 4 ? svgProps.svgSize : (tableRadius + tableOffset) * 2;
-
-    if (numSeats > 0) {
-      let centerX = svgSize / 2;
-      let centerY = svgSize / 2;
-
-      for (let i = 0; i < numSeats; i++) {
-        let seatsCount = numSeats !== 3 ? numSeats : 4;
-        let step = (2 * Math.PI * i) / seatsCount;
-        let rotate = (360 / seatsCount) * i + 90;
-        let seatCenterX = Math.cos(step) * tableRadius + centerX;
-        let seatCenterY = Math.sin(step) * tableRadius + centerY;
-        let seatStartX = seatCenterX - seatWidth / 2;
-        let seatStartY = seatCenterY + seatOffsetY - seatHeight / 2;
-
-        seats.push({
-          id: `seat_${i}`,
-          step,
-          rotate,
-          seatCenterX,
-          seatCenterY,
-          seatStartX,
-          seatStartY,
-        });
-      }
-    }
+    const seats = getSeats({ numSeats, tableRadius, svgSize });
 
     setSvgProps((prevState) => ({
       ...prevState,
@@ -111,8 +123,8 @@ export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
         </filter>
       </defs>
       <g
-        fill="#D8D8D8"
         stroke="none"
+        fill={defaultOptions.seatColor}
         transform={`rotate(${svgProps.tableRotate} ${svgProps.svgSize / 2} ${
           svgProps.svgSize / 2
         })`}
@@ -123,30 +135,29 @@ export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
             return (
               <rect
                 key={seat.id}
-                width={svgProps.seatWidth}
-                height={svgProps.seatHeight}
+                width={defaultOptions.seatWidth}
+                height={defaultOptions.seatHeight}
                 x={seat.seatStartX}
                 y={seat.seatStartY}
-                opacity={svgProps.seatOpacity}
                 transform={`rotate(${seat.rotate} ${seat.seatCenterX} ${seat.seatCenterY})`}
-                rx={svgProps.seatRound}
+                rx={defaultOptions.seatRound}
               />
             );
           })}
       </g>
 
       <circle
-        cx={svgProps.svgSize / 2}
-        cy={svgProps.svgSize / 2}
-        r={svgProps.tableSize / 2}
+        cx={calcHalf(svgProps.svgSize)}
+        cy={calcHalf(svgProps.svgSize)}
+        r={calcHalf(svgProps.tableSize)}
         stroke="none"
         fill="#000"
         filter="url(#round-shadow)"
       />
       <circle
-        cx={svgProps.svgSize / 2}
-        cy={svgProps.svgSize / 2}
-        r={svgProps.tableSize / 2}
+        cx={calcHalf(svgProps.svgSize)}
+        cy={calcHalf(svgProps.svgSize)}
+        r={calcHalf(svgProps.tableSize)}
         fill="currentColor"
         stroke="none"
       />

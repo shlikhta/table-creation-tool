@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { render } from 'react-dom';
 import './styles.css';
 import { TableSeatsTool } from './components/TableSeatsTool';
-import { DineInTable } from './components/DineInTable';
+import { Shape } from './components/Shape';
 import { DessertIcon } from 'nexticons/outline';
 
 const App = () => {
@@ -29,23 +29,23 @@ const App = () => {
       </div>
       <div className="table-area">
         <div className="table-area__inner">
-          <DineInTable
+          <Shape
             type="SquareTable"
             numSeats={squareSeats}
             number={12}
             progress={55}
             icon={<DessertIcon className="dine-in-table__icon" />}
-            tableColor="#0a56f1"
+            status="mainCurse"
           />
         </div>
         <div className="table-area__inner">
-          <DineInTable
+          <Shape
             type="RoundTable"
             numSeats={circleSeats}
             number={13}
             progress={50}
             icon={<DessertIcon className="dine-in-table__icon" />}
-            tableColor="#b620e0"
+            status="entry"
           />
         </div>
       </div>
@@ -60,13 +60,10 @@ const App = () => {
       </div>
       <div className="table-area">
         <div className="table-area__inner">
-          <DineInTable
+          <Shape
             type="RectangularTable"
             number={14}
-            showProgress={false}
             numSeats={rectangleSeats}
-            textTheme="dark"
-            tableColor="#ffffff"
           />
         </div>
         <div className="table-area__inner" />

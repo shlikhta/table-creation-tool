@@ -3,7 +3,54 @@ import { SquareTableSvg } from './SquareTableSvg';
 import { RectangularTableSvg } from './RectangularTableSvg';
 import { RoundTableSvg } from './RoundTableSvg';
 
-export const DineInTable = ({
+const tableColors = {
+  free: {
+    shapeColor: '#ffffff',
+    textColor: '#646464',
+  },
+  partiallySeated: {
+    shapeColor: '#fd6c00',
+    textColor: '#ffffff',
+  },
+  seated: {
+    shapeColor: '#fd6c00',
+    textColor: '#ffffff',
+  },
+  entry: {
+    shapeColor: '#b620e0',
+    textColor: '#ffffff',
+  },
+  mainCurse: {
+    shapeColor: '#0686f6',
+    textColor: '#ffffff',
+  },
+  dessert: {
+    shapeColor: '#eb4469',
+    textColor: '#ffffff',
+  },
+  cleared: {
+    shapeColor: '#f7b500',
+    textColor: '#ffffff',
+  },
+  checkDropped: {
+    shapeColor: '#5eb602',
+    textColor: '#ffffff',
+  },
+  paid: {
+    shapeColor: '#5eb602',
+    textColor: '#ffffff',
+  },
+  bussingNeeded: {
+    shapeColor: '#6d7278',
+    textColor: '#ffffff',
+  },
+  Finished: {
+    shapeColor: '#0686f6',
+    textColor: '#ffffff',
+  },
+};
+
+export const Shape = ({
   id,
   type,
   name,
@@ -12,23 +59,22 @@ export const DineInTable = ({
   positionX,
   positionY,
   orientationAngle = 0,
-  scale,
+  scale = 1,
   icon,
   progress,
-  showProgress = true,
-  tableColor,
-  textTheme, // dark, light
+  status = 'free',
   ...props
 }) => {
   return (
     <div
-      className={`dine-in-table dine-in-table--text-${textTheme}`}
+      className={`dine-in-table`}
+      style={{ color: tableColors[status].textColor }}
       {...props}
     >
       <div className="dine-in-table__box">
         <div className="dine-in-table__inner">
           <div className="dine-in-table__number">{name ? name : number}</div>
-          {showProgress && (
+          {status !== 'free' && (
             <div className="dine-in-table__progress-bar">
               <div
                 className="dine-in-table__progress-line"
@@ -42,8 +88,8 @@ export const DineInTable = ({
       <RenderSvg
         className="dine-in-table__svg"
         style={{
-          color: tableColor,
-          transform: `rotate(${orientationAngle}deg)`,
+          color: tableColors[status].shapeColor,
+          transform: `rotate(${orientationAngle}deg) scale(${scale})`,
         }}
         numSeats={numSeats}
         type={type}

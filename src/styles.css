@@ -355,21 +355,29 @@ img {
 }
 .dine-in-table__inner {
   display: grid;
+  width: 100%;
   gap: 5px 0;
   justify-content: center;
   align-items: center;
 }
 .dine-in-table__number {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
   font-size: 17px;
   font-weight: 500;
   line-height: 1;
   text-align: center;
+  text-overflow: ellipsis;
 }
 .dine-in-table__progress-bar {
   overflow: hidden;
   position: relative;
   display: block;
   width: 38px;
+  margin: 0 auto;
   height: 3px;
   font-size: 0;
   background-color: #c8c8c8;

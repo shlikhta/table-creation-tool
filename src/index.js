@@ -32,7 +32,7 @@ const App = () => {
           <DineInTable
             type="SquareTable"
             numSeats={squareSeats}
-            number={12}
+            number="test test test test"
             progress={55}
             icon={<DessertIcon className="dine-in-table__icon" />}
             tableColor="#0a56f1"
@@ -42,7 +42,7 @@ const App = () => {
           <DineInTable
             type="RoundTable"
             numSeats={circleSeats}
-            number={13}
+            number="test test test test"
             progress={50}
             icon={<DessertIcon className="dine-in-table__icon" />}
             tableColor="#b620e0"
@@ -62,7 +62,7 @@ const App = () => {
         <div className="table-area__inner">
           <DineInTable
             type="RectangularTable"
-            number={14}
+            number="test test test test"
             showProgress={false}
             numSeats={rectangleSeats}
             textTheme="dark"

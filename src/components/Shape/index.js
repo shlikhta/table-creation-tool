@@ -21,7 +21,7 @@ const tableColors = {
     textColor: '#ffffff',
   },
   mainCurse: {
-    shapeColor: '#0686f6',
+    shapeColor: '#0a56f1',
     textColor: '#ffffff',
   },
   dessert: {

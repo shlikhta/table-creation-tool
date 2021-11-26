@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const defaultOptions = {
   seatWidth: 26,
@@ -6,9 +6,9 @@ const defaultOptions = {
   tableOffset: 6,
   seatOffsetY: 2,
   seatRound: 7,
+  seatColor: '#A0A0A0',
   maxSpaceBetweenSeats: 18,
   minSpaceBetweenSeats: 4,
-  seatColor: '#A0A0A0',
 };
 
 export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
@@ -52,7 +52,7 @@ export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
     return seats;
   };
 
-  useMemo(() => {
+  useEffect(() => {
     const { seatWidth, tableOffset } = defaultOptions;
 
     let spaceBetweenSeats =

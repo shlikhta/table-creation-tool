@@ -7,11 +7,9 @@ const defaultOptions = {
   seatOffsetY: 2,
   seatRound: 7,
   seatColor: '#A0A0A0',
-  maxSpaceBetweenSeats: 18,
-  minSpaceBetweenSeats: 4,
 };
 
-export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
+export const RoundTableSvg = ({ numSeats = 0, tableEnds, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
     svgSize: 66,
@@ -70,7 +68,7 @@ export const RoundTableSvg = ({ numSeats = 0, ...props }) => {
 
     let tableRadius =
       numSeats <= 4
-        ? svgProps.tableSize / 2
+        ? calcHalf(svgProps.tableSize)
         : (numSeats * (seatWidth + spaceBetweenSeats)) / (2 * Math.PI);
 
     let svgSize =

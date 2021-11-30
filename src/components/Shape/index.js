@@ -63,6 +63,7 @@ export const Shape = ({
   icon,
   progress,
   status = 'free',
+  tableEnds = true,
   ...props
 }) => {
   return (
@@ -91,6 +92,7 @@ export const Shape = ({
           color: tableColors[status].shapeColor,
           transform: `rotate(${orientationAngle}deg) scale(${scale})`,
         }}
+        tableEnds={tableEnds}
         numSeats={numSeats}
         type={type}
       />

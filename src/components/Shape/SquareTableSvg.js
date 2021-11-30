@@ -10,17 +10,17 @@ const defaultOptions = {
   angleSpace: 14,
   borderCount: 4,
   seatColor: '#A0A0A0',
-  minSpaceBetweenSeats: 4,
-  maxSpaceBetweenSeats: 18,
 };
 
-export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
+export const SquareTableSvg = ({ numSeats = 0, tableEnds, ...props }) => {
   const [svgProps, setSvgProps] = useState({
     seats: [],
     svgSize: 72,
     tableSize: 54,
     spaceBetweenSeats: 8, //18
   });
+
+  // console.log('tableEnds', tableEnds);
 
   const calcHalf = (val) => {
     return val / 2;
@@ -68,15 +68,11 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
         tableProp[rectGroupIndex].count += 1;
         tableProp[rectGroupIndex].seats.push({
           id: `seat_${i}`,
-          // anglePositionX: tableProp[rectGroupIndex].anglePositionX,
-          // anglePositionY: tableProp[rectGroupIndex].anglePositionY,
         });
       } else if (i < 4) {
         tableProp[groupIndex].count += 1;
         tableProp[groupIndex].seats.push({
           id: `seat_${i}`,
-          // anglePositionX: tableProp[groupIndex].anglePositionX,
-          // anglePositionY: tableProp[groupIndex].anglePositionY,
         });
       } else {
         let rectGroupIndex = groupIndex === 3 ? 0 : groupIndex + 1;
@@ -84,8 +80,6 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
         tableProp[rectGroupIndex].count += 1;
         tableProp[rectGroupIndex].seats.push({
           id: `seat_${i}`,
-          // anglePositionX: tableProp[rectGroupIndex].anglePositionX,
-          // anglePositionY: tableProp[rectGroupIndex].anglePositionY,
         });
       }
     }
@@ -139,13 +133,13 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
             tableProp[i].seats[j].seatStartX = step;
             tableProp[i].seats[j].seatStartY =
               tableProp[i].anglePositionY -
-              seatHeight / 2 +
+              calcHalf(seatHeight) +
               (groupIndex === 3 ? seatOffset : -seatOffset);
           } else {
             tableProp[i].seats[j].seatStartY = step;
             tableProp[i].seats[j].seatStartX =
               tableProp[i].anglePositionX -
-              seatHeight / 2 +
+              calcHalf(seatHeight) +
               (groupIndex === 2 ? seatOffset : -seatOffset);
           }
         }
@@ -284,8 +278,8 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
       <rect
         width={svgProps.tableSize}
         height={svgProps.tableSize}
-        x="9"
-        y="9"
+        x={defaultOptions.tableOffset}
+        y={defaultOptions.tableOffset}
         rx="12"
         stroke="none"
         fill="#000"
@@ -294,8 +288,8 @@ export const SquareTableSvg = ({ numSeats = 0, ...props }) => {
       <rect
         width={svgProps.tableSize}
         height={svgProps.tableSize}
-        x="9"
-        y="9"
+        x={defaultOptions.tableOffset}
+        y={defaultOptions.tableOffset}
         rx="12"
         fill="currentColor"
         stroke="none"

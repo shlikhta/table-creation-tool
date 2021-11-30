@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlusCircleIcon, PlusIcon } from 'nexticons/solid';
+import { InfoIcon, PlusIcon, MinusIcon } from 'nexticons/solid';
 
 export const TableSeatsTool = ({ title, count, setSeats, desc, ...props }) => {
   return (
@@ -10,7 +10,7 @@ export const TableSeatsTool = ({ title, count, setSeats, desc, ...props }) => {
           className="table-seats-tool__button"
           onClick={() => setSeats(count > 0 ? count - 1 : 0)}
         >
-          -
+          <MinusIcon width={18} strokeWidth={2} />
         </button>
         <div className="table-seats-tool__count">{count}</div>
         <button
@@ -22,7 +22,7 @@ export const TableSeatsTool = ({ title, count, setSeats, desc, ...props }) => {
       </div>
       {desc && (
         <div className="table-seats-tool__info">
-          <PlusCircleIcon className="table-seats-tool__info-icon" />
+          <InfoIcon className="table-seats-tool__info-icon" />
           <p>{desc}</p>
         </div>
       )}

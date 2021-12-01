@@ -1,7 +1,5 @@
 import React from 'react';
-import { SquareTableSvg } from './SquareTableSvg';
-import { RectangularTableSvg } from './RectangularTableSvg';
-import { RoundTableSvg } from './RoundTableSvg';
+import tableData from './data.json';
 
 const tableColors = {
   free: {
@@ -63,7 +61,7 @@ export const Shape = ({
   icon,
   progress,
   status = 'free',
-  tableEnds = true,
+  // tableEnds = true,
   ...props
 }) => {
   return (
@@ -92,7 +90,7 @@ export const Shape = ({
           color: tableColors[status].shapeColor,
           transform: `rotate(${orientationAngle}deg) scale(${scale})`,
         }}
-        tableEnds={tableEnds}
+        // tableEnds={tableEnds}
         numSeats={numSeats}
         type={type}
       />
@@ -100,14 +98,127 @@ export const Shape = ({
   );
 };
 
-function RenderSvg({ type, ...props }) {
-  if (type === 'SquareTable') {
-    return <SquareTableSvg {...props} />;
-  } else if (type === 'RectangularTable') {
-    return <RectangularTableSvg {...props} />;
-  } else if (type === 'RoundTable') {
-    return <RoundTableSvg {...props} />;
-  } else {
-    return null;
-  }
+function RenderSvg({ type, numSeats, ...props }) {
+  const { defaultOptions, seatsData } = tableData[type];
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width={seatsData[numSeats].svgSize.width}
+      height={seatsData[numSeats].svgSize.height}
+      viewBox={`0 0 ${seatsData[numSeats].svgSize.width} ${seatsData[numSeats].svgSize.height}`}
+      {...props}
+    >
+      <defs>
+        <filter
+          id="shape-shadow"
+          width="118.6%"
+          height="118.6%"
+          x="-9.3%"
+          y="-9.3%"
+          filterUnits="objectBoundingBox"
+        >
+          <feMorphology
+            in="SourceAlpha"
+            operator="dilate"
+            radius=".5"
+            result="shadowSpreadOuter1"
+          />
+          <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
+          <feGaussianBlur
+            in="shadowOffsetOuter1"
+            result="shadowBlurOuter1"
+            stdDeviation="2.5"
+          />
+          <feColorMatrix
+            in="shadowBlurOuter1"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
+          />
+        </filter>
+      </defs>
+
+      <g
+        fill={defaultOptions.seatColor}
+        transform={`rotate(${defaultOptions.tableRotate} ${seatsData[numSeats].svgHalfWidth} ${seatsData[numSeats].svgHalfHeight})`}
+        stroke="none"
+      >
+        {seatsData[numSeats].seats &&
+          seatsData[numSeats].seats.length > 0 &&
+          seatsData[numSeats].seats.map((border, index) => {
+            return (
+              border &&
+              border.map((seat) => {
+                return (
+                  <rect
+                    key={seat.id}
+                    data-key={seat.id}
+                    width={
+                      type === 'RoundTable' || index % 2 === 1
+                        ? defaultOptions.seatWidth
+                        : defaultOptions.seatHeight
+                    }
+                    height={
+                      type === 'RoundTable' || index % 2 === 1
+                        ? defaultOptions.seatHeight
+                        : defaultOptions.seatWidth
+                    }
+                    x={seat.seatStartX}
+                    y={seat.seatStartY}
+                    transform={
+                      type === 'RoundTable'
+                        ? `rotate(${seat.rotate} ${seat.seatCenterX} ${seat.seatCenterY})`
+                        : ''
+                    }
+                    rx={defaultOptions.seatRound}
+                  />
+                );
+              })
+            );
+          })}
+      </g>
+
+      {type === 'RoundTable' ? (
+        <>
+          <circle
+            cx={seatsData[numSeats].svgHalfWidth}
+            cy={seatsData[numSeats].svgHalfWidth}
+            r={seatsData[numSeats].tableRadius}
+            stroke="none"
+            fill="#000"
+            filter="url(#shape-shadow)"
+          />
+          <circle
+            cx={seatsData[numSeats].svgHalfWidth}
+            cy={seatsData[numSeats].svgHalfWidth}
+            r={seatsData[numSeats].tableRadius}
+            fill="currentColor"
+            stroke="none"
+          />
+        </>
+      ) : (
+        <>
+          <rect
+            width={seatsData[numSeats].tableSize.width}
+            height={seatsData[numSeats].tableSize.height}
+            x={defaultOptions.tableOffset}
+            y={defaultOptions.tableOffset}
+            rx="12"
+            stroke="none"
+            fill="#000"
+            filter="url(#shape-shadow)"
+          />
+          <rect
+            width={seatsData[numSeats].tableSize.width}
+            height={seatsData[numSeats].tableSize.height}
+            x={defaultOptions.tableOffset}
+            y={defaultOptions.tableOffset}
+            rx="12"
+            fill="currentColor"
+            stroke="none"
+          />
+        </>
+      )}
+    </svg>
+  );
 }

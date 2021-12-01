@@ -1,0 +1,14 @@
+{
+  "RectangularTable": {
+    "seats": {
+      "0": {},
+      "1": {
+        "seat_1": {
+          "x" : 5,
+          "y": 5,
+          "rotate": 0
+        }
+      }
+    }
+  }
+}

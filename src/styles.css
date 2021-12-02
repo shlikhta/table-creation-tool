@@ -308,6 +308,17 @@ img {
   color: #969696;
   width: 15px;
 }
+.table-seats-tool__ends {
+  display: flex;
+  justify-content: center;
+  gap: 0 10px;
+  align-items: center;
+  cursor: pointer;
+}
+.table-seats-tool__checkbox {
+  width: 18px;
+  height: 18px;
+}
 
 .table-area {
   width: 100%;

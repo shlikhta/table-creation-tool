@@ -18,7 +18,10 @@ let svgData = {
       seatColor: "#A0A0A0",
       maxSeats: 30,
     },
-    seatsData: [],
+    seatsData: {
+      ends: [],
+      withoutEnds: [],
+    },
   },
   RectangularTable: {
     defaultOptions: {
@@ -42,7 +45,10 @@ let svgData = {
       seatColor: "#A0A0A0",
       maxSeats: 30,
     },
-    seatsData: [],
+    seatsData: {
+      ends: [],
+      withoutEnds: [],
+    },
   },
   RoundTable: {
     defaultOptions: {
@@ -58,7 +64,10 @@ let svgData = {
       seatColor: "#A0A0A0",
       maxSeats: 30,
     },
-    seatsData: [],
+    seatsData: {
+      ends: [],
+      withoutEnds: [],
+    },
   },
 };
 
@@ -177,7 +186,7 @@ function roundSeats() {
       seatHeight,
       seatOffset,
     });
-    svgData.RoundTable.seatsData[numSeats] = {
+    svgData.RoundTable.seatsData.ends[numSeats] = {
       seatsCount: numSeats,
       svgSize: {
         width: svgSize,
@@ -341,7 +350,7 @@ function squareSeats() {
       seatOffset,
     });
 
-    svgData.SquareTable.seatsData[numSeats] = {
+    svgData.SquareTable.seatsData.ends[numSeats] = {
       seatsCount: numSeats,
       svgSize: { width: svgSize, height: svgSize },
       tableSize: { width: tableSize, height: tableSize },
@@ -355,18 +364,21 @@ function squareSeats() {
 
 //start calc for Rectangular Seats
 
-function fillRectangularSeats({ tableProp, numSeats }) {
+function fillRectangularSeats({ tableProp, numSeats, ends = true }) {
   for (let i = 0; i < numSeats; i++) {
     let groupIndex = i % 4;
 
     if (numSeats === 2 && i === 1) {
       let rectGroupIndex = groupIndex % 2 === 0 ? 0 : 2;
+      if (!ends) {
+        rectGroupIndex = groupIndex % 2 === 0 ? 1 : 3;
+      }
 
       tableProp[rectGroupIndex].count += 1;
       tableProp[rectGroupIndex].seats.push({
         id: `seat_${i}`,
       });
-    } else if (i < 4) {
+    } else if (i < 4 && ends) {
       tableProp[groupIndex].count += 1;
       tableProp[groupIndex].seats.push({
         id: `seat_${i}`,
@@ -393,6 +405,7 @@ function getRectangularSeats({
   seatOffset,
   svgWidth,
   svgHeight,
+  ends = true,
 }) {
   let seats = [];
   const centerX = calcHalf(svgWidth);
@@ -437,7 +450,7 @@ function getRectangularSeats({
         let step =
           startPoint + direction * (spaceBetweenSeats * j + seatWidth * j);
 
-        if (groupIndex === 1 || groupIndex === 3) {
+        if (groupIndex === 1 || groupIndex === 3 || !ends) {
           // console.log(
           //   "startPoint",
           //   startPoint + direction * (spaceBetweenSeats * j + seatWidth * j)
@@ -463,7 +476,7 @@ function getRectangularSeats({
 
   return seats;
 }
-function rectangularSeats() {
+function rectangularSeats(ends = true, endsKey) {
   const { defaultOptions } = svgData.RectangularTable;
   const {
     borderCount,
@@ -487,7 +500,9 @@ function rectangularSeats() {
         ? 8
         : 4;
 
-    let maxSeatsEachBorder = Math.ceil(calcHalf(numSeats - 2));
+    let maxSeatsEachBorder = Math.ceil(
+      calcHalf(ends ? numSeats - 2 : numSeats)
+    );
     let tableHeight = defaultOptions.tableSize.height;
     let tablePerimeter =
       calcHalf(borderCount) * tableHeight +
@@ -513,7 +528,7 @@ function rectangularSeats() {
       tableOffset,
     });
     // console.log("tableProp", tableProp);
-    tableProp = fillRectangularSeats({ tableProp, numSeats });
+    tableProp = fillRectangularSeats({ tableProp, numSeats, ends });
     let seats = getRectangularSeats({
       maxSeatsEachBorder,
       tableProp,
@@ -523,9 +538,10 @@ function rectangularSeats() {
       seatOffset,
       svgWidth,
       svgHeight,
+      ends,
     });
 
-    svgData.RectangularTable.seatsData[numSeats] = {
+    svgData.RectangularTable.seatsData[endsKey][numSeats] = {
       seatsCount: numSeats,
       svgSize: { width: svgWidth, height: svgHeight },
       tableSize: { width: tableWidth, height: tableHeight },
@@ -539,7 +555,8 @@ function rectangularSeats() {
 
 roundSeats();
 squareSeats();
-rectangularSeats();
+rectangularSeats(true, "ends");
+rectangularSeats(false, "withoutEnds");
 
 const outDir = "./src/components/Shape/data.json";
 console.log("Write to file", outDir);

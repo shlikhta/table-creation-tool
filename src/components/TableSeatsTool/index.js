@@ -1,7 +1,17 @@
 import React from 'react';
 import { InfoIcon, PlusIcon, MinusIcon } from 'nexticons/solid';
 
-export const TableSeatsTool = ({ title, count, setSeats, desc, ...props }) => {
+export const TableSeatsTool = ({
+  id,
+  title,
+  count,
+  setSeats,
+  showEnds = false,
+  endsPosition,
+  setEndsPosition,
+  desc,
+  ...props
+}) => {
   return (
     <div className="table-seats-tool" {...props}>
       {title && <h2 className="table-seats-tool__title">{title}</h2>}
@@ -25,6 +35,18 @@ export const TableSeatsTool = ({ title, count, setSeats, desc, ...props }) => {
           <InfoIcon className="table-seats-tool__info-icon" />
           <p>{desc}</p>
         </div>
+      )}
+      {showEnds && (
+        <label className="table-seats-tool__ends">
+          <input
+            type="checkbox"
+            name={`ends-status-${id}`}
+            className="table-seats-tool__checkbox"
+            checked={endsPosition}
+            onChange={() => setEndsPosition(!endsPosition)}
+          />
+          <p>Seats on table ends</p>
+        </label>
       )}
     </div>
   );

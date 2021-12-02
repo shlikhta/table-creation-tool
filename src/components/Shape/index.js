@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import tableData from './data.json';
 
 const tableColors = {
@@ -61,9 +61,19 @@ export const Shape = ({
   icon,
   progress,
   status = 'free',
-  // tableEnds = true,
+  allowTableEndsPosition = true,
   ...props
 }) => {
+  const [endsKey, setEndsKey] = useState('ends');
+
+  useEffect(() => {
+    if (allowTableEndsPosition && endsKey !== 'ends') {
+      setEndsKey('ends');
+    } else if (!allowTableEndsPosition && endsKey === 'ends') {
+      setEndsKey('withoutEnds');
+    }
+  }, [allowTableEndsPosition]);
+
   return (
     <div
       className={`dine-in-table`}
@@ -93,21 +103,22 @@ export const Shape = ({
         // tableEnds={tableEnds}
         numSeats={numSeats}
         type={type}
+        endsKey={endsKey}
       />
     </div>
   );
 };
 
-function RenderSvg({ type, numSeats, ...props }) {
+function RenderSvg({ type, numSeats, endsKey, ...props }) {
   const { defaultOptions, seatsData } = tableData[type];
-
+  console.log('seatsData', seatsData[endsKey]);
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={seatsData[numSeats].svgSize.width}
-      height={seatsData[numSeats].svgSize.height}
-      viewBox={`0 0 ${seatsData[numSeats].svgSize.width} ${seatsData[numSeats].svgSize.height}`}
+      width={seatsData[endsKey][numSeats].svgSize.width}
+      height={seatsData[endsKey][numSeats].svgSize.height}
+      viewBox={`0 0 ${seatsData[endsKey][numSeats].svgSize.width} ${seatsData[endsKey][numSeats].svgSize.height}`}
       {...props}
     >
       <defs>
@@ -140,12 +151,12 @@ function RenderSvg({ type, numSeats, ...props }) {
 
       <g
         fill={defaultOptions.seatColor}
-        transform={`rotate(${defaultOptions.tableRotate} ${seatsData[numSeats].svgHalfWidth} ${seatsData[numSeats].svgHalfHeight})`}
+        transform={`rotate(${defaultOptions.tableRotate} ${seatsData[endsKey][numSeats].svgHalfWidth} ${seatsData[endsKey][numSeats].svgHalfHeight})`}
         stroke="none"
       >
-        {seatsData[numSeats].seats &&
-          seatsData[numSeats].seats.length > 0 &&
-          seatsData[numSeats].seats.map((border, index) => {
+        {seatsData[endsKey][numSeats].seats &&
+          seatsData[endsKey][numSeats].seats.length > 0 &&
+          seatsData[endsKey][numSeats].seats.map((border, index) => {
             return (
               border &&
               border.map((seat) => {
@@ -181,17 +192,17 @@ function RenderSvg({ type, numSeats, ...props }) {
       {type === 'RoundTable' ? (
         <>
           <circle
-            cx={seatsData[numSeats].svgHalfWidth}
-            cy={seatsData[numSeats].svgHalfWidth}
-            r={seatsData[numSeats].tableRadius}
+            cx={seatsData[endsKey][numSeats].svgHalfWidth}
+            cy={seatsData[endsKey][numSeats].svgHalfWidth}
+            r={seatsData[endsKey][numSeats].tableRadius}
             stroke="none"
             fill="#000"
             filter="url(#shape-shadow)"
           />
           <circle
-            cx={seatsData[numSeats].svgHalfWidth}
-            cy={seatsData[numSeats].svgHalfWidth}
-            r={seatsData[numSeats].tableRadius}
+            cx={seatsData[endsKey][numSeats].svgHalfWidth}
+            cy={seatsData[endsKey][numSeats].svgHalfWidth}
+            r={seatsData[endsKey][numSeats].tableRadius}
             fill="currentColor"
             stroke="none"
           />
@@ -199,8 +210,8 @@ function RenderSvg({ type, numSeats, ...props }) {
       ) : (
         <>
           <rect
-            width={seatsData[numSeats].tableSize.width}
-            height={seatsData[numSeats].tableSize.height}
+            width={seatsData[endsKey][numSeats].tableSize.width}
+            height={seatsData[endsKey][numSeats].tableSize.height}
             x={defaultOptions.tableOffset}
             y={defaultOptions.tableOffset}
             rx="12"
@@ -209,8 +220,8 @@ function RenderSvg({ type, numSeats, ...props }) {
             filter="url(#shape-shadow)"
           />
           <rect
-            width={seatsData[numSeats].tableSize.width}
-            height={seatsData[numSeats].tableSize.height}
+            width={seatsData[endsKey][numSeats].tableSize.width}
+            height={seatsData[endsKey][numSeats].tableSize.height}
             x={defaultOptions.tableOffset}
             y={defaultOptions.tableOffset}
             rx="12"

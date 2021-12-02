@@ -10,10 +10,15 @@ const App = () => {
   const [squareSeats, setSquareSeats] = useState(4);
   const [rectangleSeats, setRectangleSeats] = useState(5);
 
+  const [circleEnd, setCircleEnd] = useState(true);
+  const [squareEnd, setSquareEnd] = useState(true);
+  const [rectangleEnd, setRectangleEnd] = useState(true);
+
   return (
     <div className="app-wrap">
       <div className="table-tool-header">
         <TableSeatsTool
+          id="square"
           count={squareSeats}
           setSeats={setSquareSeats}
           title="Seats for Square Table"
@@ -21,6 +26,7 @@ const App = () => {
         />
 
         <TableSeatsTool
+          id="circle"
           count={circleSeats}
           setSeats={setCircleSeats}
           title="Seats for Circular Table"
@@ -51,8 +57,12 @@ const App = () => {
       </div>
       <div className="table-tool-header">
         <TableSeatsTool
+          id="rectangle"
           count={rectangleSeats}
           setSeats={setRectangleSeats}
+          showEnds={true}
+          endsPosition={rectangleEnd}
+          setEndsPosition={setRectangleEnd}
           title="Seats for Rectangle Table"
           desc="Select the number of seats"
         />
@@ -64,6 +74,7 @@ const App = () => {
             type="RectangularTable"
             number={14}
             numSeats={rectangleSeats}
+            allowTableEndsPosition={rectangleEnd}
           />
         </div>
         <div className="table-area__inner" />

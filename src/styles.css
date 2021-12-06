@@ -299,7 +299,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  //grid-template-columns: 15px 1fr;
+  grid-template-columns: 15px 1fr;
   gap: 0 10px;
   font-size: 13px;
   color: rgba(54, 54, 54, 0.5);
@@ -341,9 +341,7 @@ img {
 
 .dine-in-table {
   position: relative;
-
   color: #ffffff;
-  /*background-color: red;*/
 }
 
 .dine-in-table--text-light {

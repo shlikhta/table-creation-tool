@@ -9,9 +9,6 @@ const App = () => {
   const [circleSeats, setCircleSeats] = useState(8);
   const [squareSeats, setSquareSeats] = useState(4);
   const [rectangleSeats, setRectangleSeats] = useState(5);
-
-  const [circleEnd, setCircleEnd] = useState(true);
-  const [squareEnd, setSquareEnd] = useState(true);
   const [rectangleEnd, setRectangleEnd] = useState(true);
 
   return (

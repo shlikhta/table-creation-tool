@@ -111,7 +111,7 @@ export const Shape = ({
 
 function RenderSvg({ type, numSeats, endsKey, ...props }) {
   const { defaultOptions, seatsData } = tableData[type];
-  console.log('seatsData', seatsData[endsKey]);
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

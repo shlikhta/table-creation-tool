@@ -75,6 +75,10 @@ function calcHalf(val) {
   return val / 2;
 }
 
+function roundNum(num) {
+  return Math.round(num * 100) / 100;
+}
+
 function getAnglePositions({
   tableWidth,
   tableHeight,
@@ -136,13 +140,12 @@ function getRoundSeats({
       id: `seat_${i}`,
       step,
       rotate,
-      seatCenterX,
-      seatCenterY,
-      seatStartX,
-      seatStartY,
+      seatCenterX: roundNum(seatCenterX),
+      seatCenterY: roundNum(seatCenterY),
+      seatStartX: roundNum(seatStartX),
+      seatStartY: roundNum(seatStartY),
     });
   }
-  // console.log("seats round", [seats]);
   return [seats];
 }
 
@@ -174,10 +177,6 @@ function roundSeats() {
       numSeats <= 4
         ? defaultOptions.svgSize.width
         : (tableRadius + tableOffset) * 2;
-    // let svgHeight =
-    //   numSeats <= 4
-    //     ? defaultOptions.svgSize.height
-    //     : (tableRadius + tableOffset) * 2;
     const seats = getRoundSeats({
       numSeats,
       tableRadius,
@@ -189,13 +188,13 @@ function roundSeats() {
     svgData.RoundTable.seatsData.ends[numSeats] = {
       seatsCount: numSeats,
       svgSize: {
-        width: svgSize,
-        height: svgSize,
+        width: roundNum(svgSize),
+        height: roundNum(svgSize),
       },
-      svgHalfWidth: calcHalf(svgSize),
-      svgHalfHeight: calcHalf(svgSize),
-      tableRadius,
-      tableSize: tableRadius * 2,
+      svgHalfWidth: roundNum(calcHalf(svgSize)),
+      svgHalfHeight: roundNum(calcHalf(svgSize)),
+      tableRadius: roundNum(tableRadius),
+      tableSize: roundNum(tableRadius * 2),
       tableRotate: numSeats === 5 ? 270 : 180,
       seats,
     };
@@ -204,7 +203,6 @@ function roundSeats() {
 //end calc for Round Seats
 
 //start calc for Square Seats
-
 function fillSquareSeats({ tableProp, numSeats }) {
   for (let i = 0; i < numSeats; i++) {
     let groupIndex = i % 4;
@@ -244,8 +242,6 @@ function getSquareSeats({
 }) {
   let seats = [];
   const centerCoordinate = calcHalf(svgSize);
-  // const { defaultOptions } = svgData.RoundTable;
-  // const {  } = defaultOptions;
 
   for (let i = 0; i < tableProp.length; i++) {
     let groupIndex = i % 4;
@@ -275,21 +271,24 @@ function getSquareSeats({
       }
 
       for (let j = 0; j < seatsLength; j++) {
-        let step =
-          startPoint + direction * (spaceBetweenSeats * j + seatWidth * j);
+        let step = roundNum(
+          startPoint + direction * (spaceBetweenSeats * j + seatWidth * j)
+        );
 
         if (groupIndex === 1 || groupIndex === 3) {
           tableProp[i].seats[j].seatStartX = step;
-          tableProp[i].seats[j].seatStartY =
+          tableProp[i].seats[j].seatStartY = roundNum(
             tableProp[i].anglePositionY -
-            calcHalf(seatHeight) +
-            (groupIndex === 3 ? seatOffset : -seatOffset);
+              calcHalf(seatHeight) +
+              (groupIndex === 3 ? seatOffset : -seatOffset)
+          );
         } else {
           tableProp[i].seats[j].seatStartY = step;
-          tableProp[i].seats[j].seatStartX =
+          tableProp[i].seats[j].seatStartX = roundNum(
             tableProp[i].anglePositionX -
-            calcHalf(seatHeight) +
-            (groupIndex === 2 ? seatOffset : -seatOffset);
+              calcHalf(seatHeight) +
+              (groupIndex === 2 ? seatOffset : -seatOffset)
+          );
         }
       }
     }
@@ -352,10 +351,10 @@ function squareSeats() {
 
     svgData.SquareTable.seatsData.ends[numSeats] = {
       seatsCount: numSeats,
-      svgSize: { width: svgSize, height: svgSize },
-      tableSize: { width: tableSize, height: tableSize },
-      svgHalfHeight: calcHalf(svgSize),
-      svgHalfWidth: calcHalf(svgSize),
+      svgSize: { width: roundNum(svgSize), height: roundNum(svgSize) },
+      tableSize: { width: roundNum(tableSize), height: roundNum(tableSize) },
+      svgHalfHeight: roundNum(calcHalf(svgSize)),
+      svgHalfWidth: roundNum(calcHalf(svgSize)),
       seats,
     };
   }
@@ -447,26 +446,24 @@ function getRectangularSeats({
       }
 
       for (let j = 0; j < seatsLength; j++) {
-        let step =
-          startPoint + direction * (spaceBetweenSeats * j + seatWidth * j);
+        let step = roundNum(
+          startPoint + direction * (spaceBetweenSeats * j + seatWidth * j)
+        );
 
         if (groupIndex === 1 || groupIndex === 3 || !ends) {
-          // console.log(
-          //   "startPoint",
-          //   startPoint + direction * (spaceBetweenSeats * j + seatWidth * j)
-          // );
-          // let offsetDirection = groupIndex === 3 ? -1 : 1;
           tableProp[i].seats[j].seatStartX = step;
-          tableProp[i].seats[j].seatStartY =
+          tableProp[i].seats[j].seatStartY = roundNum(
             tableProp[i].anglePositionY -
-            calcHalf(seatHeight) +
-            (groupIndex === 3 ? seatOffset : -seatOffset);
+              calcHalf(seatHeight) +
+              (groupIndex === 3 ? seatOffset : -seatOffset)
+          );
         } else {
           tableProp[i].seats[j].seatStartY = step;
-          tableProp[i].seats[j].seatStartX =
+          tableProp[i].seats[j].seatStartX = roundNum(
             tableProp[i].anglePositionX -
-            calcHalf(seatHeight) +
-            (groupIndex === 2 ? seatOffset : -seatOffset);
+              calcHalf(seatHeight) +
+              (groupIndex === 2 ? seatOffset : -seatOffset)
+          );
         }
       }
     }
@@ -489,16 +486,30 @@ function rectangularSeats(ends = true, endsKey) {
   } = defaultOptions;
 
   for (let numSeats = 0; numSeats <= maxSeats; numSeats++) {
-    let spaceBetweenSeats =
-      numSeats <= 8
-        ? defaultOptions.spaceBetweenSeats
-        : numSeats > 8 && numSeats <= 12
-        ? 14
-        : numSeats > 12 && numSeats <= 16
-        ? 10
-        : numSeats > 16 && numSeats <= 20
-        ? 8
-        : 4;
+    let spaceBetweenSeats = defaultOptions.spaceBetweenSeats;
+    if (ends) {
+      spaceBetweenSeats =
+        numSeats <= 8
+          ? defaultOptions.spaceBetweenSeats
+          : numSeats > 8 && numSeats <= 12
+          ? 14
+          : numSeats > 12 && numSeats <= 16
+          ? 10
+          : numSeats > 16 && numSeats <= 20
+          ? 8
+          : 4;
+    } else {
+      spaceBetweenSeats =
+        numSeats <= 6
+          ? defaultOptions.spaceBetweenSeats
+          : numSeats > 6 && numSeats <= 10
+          ? 14
+          : numSeats > 10 && numSeats <= 14
+          ? 10
+          : numSeats > 14 && numSeats <= 18
+          ? 8
+          : 4;
+    }
 
     let maxSeatsEachBorder = Math.ceil(
       calcHalf(ends ? numSeats - 2 : numSeats)
@@ -527,7 +538,6 @@ function rectangularSeats(ends = true, endsKey) {
       borderCount,
       tableOffset,
     });
-    // console.log("tableProp", tableProp);
     tableProp = fillRectangularSeats({ tableProp, numSeats, ends });
     let seats = getRectangularSeats({
       maxSeatsEachBorder,
@@ -543,10 +553,10 @@ function rectangularSeats(ends = true, endsKey) {
 
     svgData.RectangularTable.seatsData[endsKey][numSeats] = {
       seatsCount: numSeats,
-      svgSize: { width: svgWidth, height: svgHeight },
-      tableSize: { width: tableWidth, height: tableHeight },
-      svgHalfHeight: calcHalf(svgHeight),
-      svgHalfWidth: calcHalf(svgWidth),
+      svgSize: { width: roundNum(svgWidth), height: roundNum(svgHeight) },
+      tableSize: { width: roundNum(tableWidth), height: roundNum(tableHeight) },
+      svgHalfHeight: roundNum(calcHalf(svgHeight)),
+      svgHalfWidth: roundNum(calcHalf(svgWidth)),
       seats,
     };
   }
